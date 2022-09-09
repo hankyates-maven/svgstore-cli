@@ -11,8 +11,8 @@ var yargs     = require('yargs-parser');
 // Define the available command-line options
 var argv_options = {
     alias: { inline: ['i'], output: ['o'], prefix: ['p'] },
-    default: { inline: false, output: '', prefix: '' },
-    boolean: ['inline']
+    default: { cleanupdefs: false, inline: false, output: '', prefix: '' },
+    boolean: ['inline', 'cleanupdefs']
 };
 
 
@@ -22,6 +22,7 @@ var args = yargs(process.argv.slice(2), argv_options);
 var output = args.output;
 var prefix = args.prefix;
 var inline = args.inline;
+var cleanupdefs = args.cleanupdefs;
 var inputs = [];
 
 
@@ -40,7 +41,7 @@ if (inputs.length == 0) {
 // Build up the spritesheet
 var sprites = inputs.reduce(function(sprites, file) {
     return sprites.add(prefix + path.basename(file, '.svg'), fs.readFileSync(file, 'utf8'));
-}, svgstore({ inline: inline }));
+}, svgstore({ inline: inline, cleanupdefs: cleanupdefs }));
 
 
 // Output to file, or to stdout
